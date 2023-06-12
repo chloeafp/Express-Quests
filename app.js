@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-const { hashPassword } = require("./auth.js");
+const { hashPassword, verifyPassword } = require("./auth.js");
 
 const app = express();
 
@@ -47,5 +47,10 @@ app.listen(port, (err) => {
 });
 
 
+app.post(
+  "/api/login",
+  userHandlers.getUserByEmailWithPasswordAndPassToNext,
+  verifyPassword
+);
 
 
