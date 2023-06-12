@@ -31,7 +31,7 @@ app.post(
 );
 
 app.use(verifyToken);
-app.post("/api/movies", verifyToken, movieHandlers.postMovie);
+app.post("/api/movies", movieHandlers.postMovie);
 app.put("/api/movies/:id", movieHandlers.updateMovie);
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);
 app.put("/api/users/:id", verifyId, userHandlers.updateUser);
