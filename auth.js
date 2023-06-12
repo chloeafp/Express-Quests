@@ -8,8 +8,9 @@ const hashingOptions =  {
 };
 
 const hashPassword = (req, res, next) => {
+  const { password } = req.body;
     argon2
-      .hash(req.body.password, hashingOptions)
+      .hash(password, hashingOptions)
       .then((hashedPassword) => {
         console.log(hashedPassword);
   
@@ -29,7 +30,7 @@ const hashPassword = (req, res, next) => {
     const hashedPassword = req.user.hashedPassword;
 
     argon2 
-        .verify(hashedPassword, password)
+        .verify(password, hashedPassword)
         .then ((match) => {
             if (match) {
                 const payload = { sub: req.user.id };
@@ -70,12 +71,12 @@ const hashPassword = (req, res, next) => {
   };
 
 const verifyId = (req, res, next) => {
-        const id = parseInt(req.params.id);
-
+        const id = parseInt(req.params.id) ;
+        console.log(id)
         const payloadUserId = req.payload ? req.payload.sub : null;
-        
+        console.log(payloadUserId);
 
-        if (!payloadUserId || id !== payloadUserId) {
+        if (!payloadUserId || id !== parseInt(payloadUserId)) {
           return res.status(403).send("Forbidden");
         }   
         next();

@@ -2,12 +2,13 @@ require("dotenv").config();
 
 const express = require("express");
 const { hashPassword, verifyPassword, verifyToken, verifyId } = require("./auth.js");
-
+const movieHandlers = require("./movieHandlers");
+const userHandlers = require("./userHandlers");
 const app = express();
 
 app.use(express.json());
 
-const port = process.env.APP_PORT ?? 5003;
+const port = process.env.APP_PORT || 5003;
 
 const welcome = (req, res) => {
   res.send("Welcome to my favourite movie list");
@@ -15,8 +16,7 @@ const welcome = (req, res) => {
 
 app.get("/", welcome);
 
-const movieHandlers = require("./movieHandlers");
-const userHandlers = require("./userHandlers");
+
 
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
@@ -34,8 +34,8 @@ app.use(verifyToken);
 app.post("/api/movies", verifyToken, movieHandlers.postMovie);
 app.put("/api/movies/:id", movieHandlers.updateMovie);
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);
-app.put("/api/users/:id", verifyId, hashPassword, userHandlers.updateUser);
-app.delete("/api/users/:id", verifyId, hashPassword, userHandlers.deleteUser);
+app.put("/api/users/:id", verifyId, userHandlers.updateUser);
+app.delete("/api/users/:id", verifyId, userHandlers.deleteUser);
 
 
 app.listen(port, (err) => {
